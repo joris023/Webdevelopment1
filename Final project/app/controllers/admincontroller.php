@@ -20,7 +20,7 @@ class AdminController extends Controller {
     public function manageorders() {
         // Fetch orders using the MenuService
         $orders = $this->orderService->getAllOrders();
-        $this->displayView(['orders' => $orders]);
+        $this->displayView(['orderss' => $orders]);
     }
 
     public function removeorder() {
