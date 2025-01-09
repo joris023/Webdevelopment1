@@ -1,14 +1,5 @@
 <?php require __DIR__ . '/../shared/header.php'; ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
+<title>Register</title>
     <div class="container mt-5">
         <h1 class="text-center mb-4">Register</h1>
         <div class="row justify-content-center">
@@ -51,6 +42,4 @@
             }
         });
     </script>
-</body>
-</html>
 <?php require __DIR__ . '/../shared/footer.php'; ?>

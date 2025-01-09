@@ -1,6 +1,4 @@
-<?php //session_start();
-require __DIR__ . '/../shared/header.php'; 
-?>
+<?php require __DIR__ . '/../shared/header.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

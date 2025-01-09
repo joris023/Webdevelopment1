@@ -1,17 +1,7 @@
 <?php require __DIR__ . '/../shared/header.php'; ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Order</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
+<title>Your Order</title>
     <div class="container mt-5">
         <h1 class="text-center mb-4">Your Order</h1>
-
         <!-- Drinks Section -->
         <h3>Drinks</h3>
         <?php if (!empty($drinks)): ?>
@@ -98,6 +88,4 @@
             <button type="submit" class="btn btn-primary mt-4">Pay for Order</button>
         </form>
     </div>
-</body>
-</html>
 <?php require __DIR__ . '/../shared/footer.php'; ?>
