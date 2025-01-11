@@ -30,6 +30,10 @@
                         <label for="itemStock">Stock</label>
                         <input type="number" class="form-control" id="itemStock" name="stock" required>
                     </div>
+                    <div class="form-group" enctype="multipart/form-data">
+                        <label for="itemImage">Upload Image:</label>
+                        <input type="file" id="itemImage" name="image" accept="image/*">
+                    </div> 
                     <button type="submit" class="btn btn-primary" onclick="addMenuItem()">Add Item</button>
                 </form>
             </div>

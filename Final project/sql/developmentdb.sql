@@ -22,10 +22,10 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Example Users
-INSERT INTO `users` (`id`, `firstname`, `email`, `password`, `role`) VALUES
-(1, 'John Doe', 'john.doe@example.com', 'password123', 'customer'),
-(2, 'Jane Smith', 'jane.smith@example.com', 'password456', 'customer'),
-(3, 'Admin User', 'admin@example.com', 'adminpassword', 'admin');
+-- INSERT INTO `users` (`id`, `firstname`, `email`, `password`, `role`) VALUES
+-- (1, 'John Doe', 'john.doe@example.com', 'password123', 'customer'),
+-- (2, 'Jane Smith', 'jane.smith@example.com', 'password456', 'customer'),
+-- (3, 'Admin User', 'admin@example.com', 'adminpassword', 'admin');
 
 -- --------------------------------------------------------
 -- Table structure for table `foods`

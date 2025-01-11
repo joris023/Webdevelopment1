@@ -40,27 +40,17 @@ class DrinkRepository extends Repository {
         }
     }
 
-    /*public function updateStock($drinkId, $newStock) {
-        try {
-            $stmt = $this->connection->prepare(
-                "UPDATE drinks SET stock = ? WHERE id = ?"
-            );
-            $stmt->execute([$newStock, $drinkId]);
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
-    }*/
-
     public function insertDrink($drink) {
         try {
             $stmt = $this->connection->prepare(
-                "INSERT INTO foods (name, description, price, stock) VALUES (?, ?, ?, ?)"
+                "INSERT INTO foods (name, description, price, stock, image) VALUES (?, ?, ?, ?, ?)"
             );
             $stmt->execute([
                 $drink['name'],
                 $drink['description'],
                 $drink['price'],
-                $drink['stock']
+                $drink['stock'],
+                $drink['image']
             ]);
             return $this->connection->lastInsertId();
         } catch (PDOException $e) {

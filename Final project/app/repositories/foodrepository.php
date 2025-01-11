@@ -40,27 +40,17 @@ class FoodRepository extends Repository {
         }
     }
 
-    /*public function updateStock($foodId, $newStock) {
-        try {
-            $stmt = $this->connection->prepare(
-                "UPDATE foods SET stock = ? WHERE id = ?"
-            );
-            $stmt->execute([$newStock, $foodId]);
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
-    }*/
-
     public function insertFood($food) {
         try {
             $stmt = $this->connection->prepare(
-                "INSERT INTO foods (name, description, price, stock) VALUES (?, ?, ?, ?)"
+                "INSERT INTO foods (name, description, price, stock, image) VALUES (?, ?, ?, ?, ?)"
             );
             $stmt->execute([
                 $food['name'],
                 $food['description'],
                 $food['price'],
-                $food['stock']
+                $food['stock'],
+                $food['image']
             ]);
             return $this->connection->lastInsertId();
         } catch (PDOException $e) {
