@@ -1,4 +1,3 @@
-/* Ensure the body takes the full height of the viewport */
 html, body {
     height: 100%;
     margin: 0;
@@ -8,4 +7,15 @@ html, body {
 
 .container {
     flex: 1;
+}
+
+.image-container {
+    height: 200px;
+    overflow: hidden;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }

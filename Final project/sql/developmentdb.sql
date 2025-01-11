@@ -35,6 +35,7 @@ CREATE TABLE `foods` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   `description` TEXT NOT NULL,
+  `image` VARCHAR(255) NULL,
   `price` DECIMAL(10,2) NOT NULL,
   `stock` INT(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
@@ -54,6 +55,7 @@ CREATE TABLE `drinks` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   `description` TEXT NOT NULL,
+  `image` VARCHAR(255) NULL,
   `price` DECIMAL(10,2) NOT NULL,
   `stock` INT(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)

@@ -6,6 +6,7 @@ class Drink implements JsonSerializable {
     private string $name;
     private float $price;
     private string $description;
+    private ?string $image;
     private int $stock;
     public int $quantity = 0;
 
@@ -19,6 +20,15 @@ class Drink implements JsonSerializable {
 
     public function setStock(int $stock): self {
         $this->stock = $stock;
+        return $this;
+    }
+
+    public function getImage(): ?string {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): self {
+        $this->image = $image;
         return $this;
     }
 

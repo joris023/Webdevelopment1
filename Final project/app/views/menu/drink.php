@@ -6,6 +6,15 @@
             <?php foreach ($drinks as $drink): ?>
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-2">
                     <div class="card h-100">
+                        <?php if (!empty($drink->getImage())): ?>
+                            <div class="image-container m-2">
+                                <img src="<?= htmlspecialchars($drink->getImage()) ?>" class="card-img-top" alt="<?= htmlspecialchars($drink->getName()) ?>">
+                            </div>
+                        <?php else: ?>
+                            <div class="image-container m-2">
+                                <img src="/images/default.jpg" class="card-img-top" alt="Default">
+                            </div>
+                        <?php endif; ?>
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title text-center"><?= htmlspecialchars($drink->getName()) ?></h5>
                             <p class="card-text text-muted text-center"><?= htmlspecialchars($drink->getDescription()) ?></p>
