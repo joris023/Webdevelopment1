@@ -29,26 +29,36 @@ async function fetchMenuItems() {
 }
 
 async function addMenuItem() {
-    const formData = {
-        type: document.getElementById('itemType').value,
-        name: document.getElementById('itemName').value,
-        description: document.getElementById('itemDescription').value,
-        price: parseFloat(document.getElementById('itemPrice').value),
-        stock: parseInt(document.getElementById('itemStock').value, 10),
-    };
+    const formData = new FormData();
+    formData.append('type', document.getElementById('itemType').value);
+    formData.append('name', document.getElementById('itemName').value);
+    formData.append('description', document.getElementById('itemDescription').value);
+    formData.append('price', parseFloat(document.getElementById('itemPrice').value));
+    formData.append('stock', parseInt(document.getElementById('itemStock').value, 10));
 
-    const response = await fetch('/api/menuapi', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-    });
+    // Add the image file if provided
+    const imageFile = document.getElementById('itemImage').files[0];
+    if (imageFile) {
+        formData.append('image', imageFile);
+    }
 
-    if (response.ok) {
-        alert('Menu item added successfully!');
-        document.getElementById('addMenuItemForm').reset();
-        fetchMenuItems(); // Refresh the menu items list
-    } else {
-        alert('Failed to add menu item.');
+    try {
+        const response = await fetch('/api/menuapi', {
+            method: 'POST',
+            body: formData // No need to set headers; fetch automatically handles multipart/form-data
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert('Menu item added successfully!');
+            document.getElementById('addMenuItemForm').reset();
+            fetchMenuItems(); // Refresh the menu items list
+        } else {
+            alert('Failed to add menu item: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while adding the menu item.');
     }
 }
 

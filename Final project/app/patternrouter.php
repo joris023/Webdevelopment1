@@ -15,18 +15,18 @@ class PatternRouter
     {
 
         
-        if (preg_match('/\.(css|js|png|jpg|jpeg|gif|ico|svg)$/', $uri)) {
-            $filePath = __DIR__ . '/../public' . $uri;
-            if (file_exists($filePath)) {
-                header('Content-Type: ' . mime_content_type($filePath));
-                readfile($filePath);
-                exit();
-            } else {
-                http_response_code(404);
-                echo "File not found: $uri";
-                exit();
-            }
-        }
+        // if (preg_match('/\.(css|js|png|jpg|jpeg|gif|ico|svg)$/', $uri)) {
+        //     $filePath = __DIR__ . '/../public' . $uri;
+        //     if (file_exists($filePath)) {
+        //         header('Content-Type: ' . mime_content_type($filePath));
+        //         readfile($filePath);
+        //         exit();
+        //     } else {
+        //         http_response_code(404);
+        //         echo "File not found: $uri";
+        //         exit();
+        //     }
+        // }
         // check if we are requesting an api route
         $api = false;
         if (str_starts_with($uri, "api/")) {

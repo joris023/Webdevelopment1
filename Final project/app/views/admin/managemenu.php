@@ -33,7 +33,7 @@
                     <div class="form-group" enctype="multipart/form-data">
                         <label for="itemImage">Upload Image:</label>
                         <input type="file" id="itemImage" name="image" accept="image/*">
-                    </div> 
+                    </div>
                     <button type="submit" class="btn btn-primary" onclick="addMenuItem()">Add Item</button>
                 </form>
             </div>
