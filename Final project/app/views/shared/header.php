@@ -7,36 +7,32 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <nav class="navbar navbar-light HeadFoot">
-        <div class="container d-flex justify-content-between align-items-center">
+    <nav class="navbar navbar-light HeadFoot px-1 px-sm-3">
+        <div class="container d-flex justify-content-between align-items-center px-0 px-sm-3">
             <a class="navbar-brand font-weight-bold">Kipperij</a>
-            <ul class="navbar-nav flex-row">
+            <ul class="navbar-nav d-flex flex-row align-items-center ml-auto">
                 <?php if (isset($_SESSION['user_role'])): ?>
-                    <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin'): ?>
-                        <li class="nav-item mx-3">
-                            <a class="nav-link" href="/admin">
-                                Admin Panel
-                            </a>
+                    <?php if ($_SESSION['user_role'] === 'admin'): ?>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link" href="/admin">Admin Panel</a>
                         </li>
-                    <?php elseif (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'customer'): ?>
-                        <li class="nav-item mx-3">
-                            <a class="nav-link" href="/menu">
-                                Menu
-                            </a>
+                    <?php elseif ($_SESSION['user_role'] === 'customer'): ?>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link" href="/menu">Menu</a>
                         </li>
                     <?php endif; ?>
                     <?php if ($_SESSION['user_role'] !== 'admin'): ?>
-                        <li class="nav-item mx-3">
+                        <li class="nav-item mx-2">
                             <a class="nav-link d-flex align-items-center" href="/order">
                                 Basket
-                                <span class="badge badge-pill badge-primary ml-2">
+                                <span class="badge badge-pill badge-primary ml-1">
                                     <?= isset($_SESSION['order']['foods']) || isset($_SESSION['order']['drinks']) ? 
                                         count($_SESSION['order']['foods'] ?? []) + count($_SESSION['order']['drinks'] ?? []) : 0; ?>
                                 </span>
                             </a>
                         </li>
                     <?php endif; ?>
-                    <li class="nav-item">
+                    <li class="nav-item mx-2">
                         <form method="POST" action="/login/logout">
                             <button type="submit" class="btn btn-outline-danger btn-sm">Logout</button>
                         </form>
@@ -45,4 +41,3 @@
             </ul>
         </div>
     </nav>
-
