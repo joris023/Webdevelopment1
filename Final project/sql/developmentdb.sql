@@ -42,10 +42,10 @@ CREATE TABLE `foods` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Example Foods
-INSERT INTO `foods` (`id`, `name`, `description`, `price`, `stock`) VALUES
-(1, 'Pizza', 'Delicious cheese pizza with tomato sauce and a variety of toppings.', 8.99, 10),
-(2, 'Burger', 'Juicy beef burger served with lettuce, tomato, and a side of fries.', 7.49, 20),
-(3, 'Pasta', 'Fresh pasta with a creamy Alfredo sauce and Parmesan cheese.', 6.99, 15);
+INSERT INTO `foods` (`id`, `name`, `description`, `image`, `price`, `stock`) VALUES
+(1, 'Pizza', 'Delicious cheese pizza with tomato sauce and a variety of toppings.', '/images/food/pizza.png', 8.99, 10),
+(2, 'Burger', 'Juicy beef burger served with lettuce, tomato, and a side of fries.', '/images/food/burger.jpg', 7.49, 20),
+(3, 'Pasta', 'Fresh pasta with a creamy Alfredo sauce and Parmesan cheese.', null , 6.99, 15);
 
 -- --------------------------------------------------------
 -- Table structure for table `drinks`
@@ -62,10 +62,10 @@ CREATE TABLE `drinks` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Example Drinks
-INSERT INTO `drinks` (`id`, `name`, `description`, `price`, `stock`) VALUES
-(1, 'Coke', 'Refreshing cola drink served chilled.', 2.49, 50),
-(2, 'Sprite', 'Lemon-lime flavored soft drink, ice cold.', 2.49, 50),
-(3, 'Water', 'Pure and refreshing bottled water.', 1.49, 100);
+INSERT INTO `drinks` (`id`, `name`, `description`, `image`, `price`, `stock`) VALUES
+(1, 'Coke', 'Refreshing cola drink served chilled.', '/images/drink/cola.jpg', 2.49, 50),
+(2, 'Sprite', 'Lemon-lime flavored soft drink, ice cold.', '/images/drink/sprite.jpg', 2.49, 50),
+(3, 'Water', 'Pure and refreshing bottled water.', '/images/drink/water.jpg', 1.49, 100);
 
 -- --------------------------------------------------------
 -- Table structure for table `orders`

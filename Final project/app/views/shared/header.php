@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <nav class="navbar navbar-light bg-light">
+    <nav class="navbar navbar-light HeadFoot">
         <div class="container d-flex justify-content-between align-items-center">
             <a class="navbar-brand font-weight-bold">Kipperij</a>
             <ul class="navbar-nav flex-row">

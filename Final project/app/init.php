@@ -39,3 +39,4 @@ foreach ($roleBasedAccess as $route => $role) {
     }
 }
 
+?>

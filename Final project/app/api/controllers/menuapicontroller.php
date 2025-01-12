@@ -20,8 +20,6 @@ class MenuApiController {
                 echo json_encode(['success' => false, 'message' => 'Invalid input data.']);
                 return;
             }
-    
-            // Handle image upload
             $imagePath = null;
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
                 $uploadDir = __DIR__ . '/../../public/images/' . $_POST['type'] . '/';
