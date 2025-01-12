@@ -23,6 +23,11 @@
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Register</button>
                 </form>
+                <?php if (isset($_GET['error'])): ?>
+                    <div class="alert alert-danger m-0 mt-4" role="alert">
+                        <?= htmlspecialchars($_GET['error']) ?>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
         <div class="text-center mt-4">
@@ -30,16 +35,4 @@
             <a href="/login" class="btn btn-outline-dark">Go back to login</a>
         </div>
     </div>
-    <script>
-        // Optional: Basic client-side password match validation
-        document.querySelector('form').addEventListener('submit', function (e) {
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            if (password !== confirmPassword) {
-                e.preventDefault();
-                alert('Passwords do not match!');
-            }
-        });
-    </script>
 <?php require __DIR__ . '/../shared/footer.php'; ?>
