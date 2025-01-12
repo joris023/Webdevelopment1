@@ -46,7 +46,7 @@ class MenuApiController {
                 'description' => $_POST['description'],
                 'price' => $_POST['price'],
                 'stock' => $_POST['stock'],
-                'image' => $imagePath // Include image path if uploaded
+                'image' => $imagePath
             ];
     
             try {

@@ -45,7 +45,7 @@ async function addMenuItem() {
     try {
         const response = await fetch('/api/menuapi', {
             method: 'POST',
-            body: formData // No need to set headers; fetch automatically handles multipart/form-data
+            body: formData
         });
 
         const result = await response.json();
