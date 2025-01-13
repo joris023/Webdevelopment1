@@ -11,17 +11,16 @@ class OrderController extends Controller {
     private $orderService;
 
     public function __construct() {
-        //session_start();
         if (!isset($_SESSION['user_id'])) {
             header("Location: /login");
             exit();
         }
-    
+
         if (!isset($_SESSION['table_number'])) {
             header("Location: /login/tablenumber");
             exit();
-            //$_SESSION['table_number'] = 5; // Example table number
         }
+
         $this->foodService = new FoodService();
         $this->drinkService = new DrinkService();
         $this->orderService = new OrderService();
@@ -32,24 +31,22 @@ class OrderController extends Controller {
         $drinks = [];
         $totalAmount = 0;
 
-        // Fetch food details
         if (!empty($_SESSION['order']['foods'])) {
             foreach ($_SESSION['order']['foods'] as $foodOrder) {
-                $food = $this->foodService->getFoodById($foodOrder['id']);
+                $food = $this->foodService->getFoodById(filter_var($foodOrder['id'], FILTER_VALIDATE_INT));
                 if ($food) {
-                    $food->quantity = $foodOrder['quantity'];
+                    $food->quantity = filter_var($foodOrder['quantity'], FILTER_VALIDATE_INT);
                     $foods[] = $food;
                     $totalAmount += $food->getPrice() * $food->quantity;
                 }
             }
         }
 
-        // Fetch drink details
         if (!empty($_SESSION['order']['drinks'])) {
             foreach ($_SESSION['order']['drinks'] as $drinkOrder) {
-                $drink = $this->drinkService->getDrinkById($drinkOrder['id']);
+                $drink = $this->drinkService->getDrinkById(filter_var($drinkOrder['id'], FILTER_VALIDATE_INT));
                 if ($drink) {
-                    $drink->quantity = $drinkOrder['quantity'];
+                    $drink->quantity = filter_var($drinkOrder['quantity'], FILTER_VALIDATE_INT);
                     $drinks[] = $drink;
                     $totalAmount += $drink->getPrice() * $drink->quantity;
                 }
@@ -58,7 +55,6 @@ class OrderController extends Controller {
 
         $_SESSION['order_total'] = $totalAmount;
 
-        // Pass data to the view
         $this->displayView([
             'foods' => $foods,
             'drinks' => $drinks,
@@ -67,11 +63,10 @@ class OrderController extends Controller {
     }
 
     public function updateFood() {
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-        $foodId = $_POST['food_id'];
+        $foodId = filter_input(INPUT_POST, 'food_id', FILTER_VALIDATE_INT);
         $action = $_POST['action'];
-    
-        if (isset($_SESSION['order']['foods'])) {
+
+        if ($foodId && isset($_SESSION['order']['foods'])) {
             foreach ($_SESSION['order']['foods'] as &$food) {
                 if ($food['id'] == $foodId) {
                     if ($action === 'increment') {
@@ -83,16 +78,15 @@ class OrderController extends Controller {
                 }
             }
         }
-    
+
         header("Location: /order");
         exit();
     }
 
     public function deleteFood() {
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-        $foodId = $_POST['food_id'];
+        $foodId = filter_input(INPUT_POST, 'food_id', FILTER_VALIDATE_INT);
 
-        if (isset($_SESSION['order']['foods'])) {
+        if ($foodId && isset($_SESSION['order']['foods'])) {
             foreach ($_SESSION['order']['foods'] as $key => $food) {
                 if ($food['id'] == $foodId) {
                     unset($_SESSION['order']['foods'][$key]);
@@ -100,37 +94,36 @@ class OrderController extends Controller {
                 }
             }
         }
+
         header("Location: /order");
         exit();
     }
 
     public function updateDrink() {
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-        $foodId = $_POST['drink_id'];
+        $drinkId = filter_input(INPUT_POST, 'drink_id', FILTER_VALIDATE_INT);
         $action = $_POST['action'];
-    
-        if (isset($_SESSION['order']['drinks'])) {
-            foreach ($_SESSION['order']['drinks'] as &$food) {
-                if ($food['id'] == $foodId) {
+
+        if ($drinkId && isset($_SESSION['order']['drinks'])) {
+            foreach ($_SESSION['order']['drinks'] as &$drink) {
+                if ($drink['id'] == $drinkId) {
                     if ($action === 'increment') {
-                        $food['quantity']++;
-                    } elseif ($action === 'decrement' && $food['quantity'] > 1) {
-                        $food['quantity']--;
+                        $drink['quantity']++;
+                    } elseif ($action === 'decrement' && $drink['quantity'] > 1) {
+                        $drink['quantity']--;
                     }
                     break;
                 }
             }
         }
-    
+
         header("Location: /order");
         exit();
     }
 
     public function deleteDrink() {
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-        $drinkId = $_POST['drink_id'];
+        $drinkId = filter_input(INPUT_POST, 'drink_id', FILTER_VALIDATE_INT);
 
-        if (isset($_SESSION['order']['drinks'])) {
+        if ($drinkId && isset($_SESSION['order']['drinks'])) {
             foreach ($_SESSION['order']['drinks'] as $key => $drink) {
                 if ($drink['id'] == $drinkId) {
                     unset($_SESSION['order']['drinks'][$key]);
@@ -138,36 +131,30 @@ class OrderController extends Controller {
                 }
             }
         }
+
         header("Location: /order");
         exit();
     }
 
     public function checkout() {
-
-        //var_dump($_SESSION['order']['foods']);
-        // Build the Order object from the session
         $order = new Order();
-        $order->setUserId($_SESSION['user_id']); // Assume user ID is stored in session
+        $order->setUserId($_SESSION['user_id']);
         $order->setTableNumber($_SESSION['table_number']);
         $order->setTotalAmount($_SESSION['order_total']);
         $order->setFoods($_SESSION['order']['foods'] ?? []);
         $order->setDrinks($_SESSION['order']['drinks'] ?? []);
 
         try {
-            // Place the order
             $this->orderService->placeOrder($order);
-
-            // Redirect to confirmation page
             $this->confirmation();
         } catch (Exception $e) {
-            echo "Error: " . $e->getMessage();
+            error_log("Checkout error: " . $e->getMessage());
+            header("Location: /order?error=Checkout failed");
+            exit();
         }
     }
 
     public function confirmation() {
         $this->displayView([]);
     }
-    
 }
-
-?>

@@ -19,18 +19,13 @@ class MenuApiController {
                 $menuItems = $this->menuService->getAllMenuItems();
                 echo json_encode($menuItems);
             } elseif ($method === 'POST') {
-                $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
                 if (!isset($_POST['type'], $_POST['name'], $_POST['description'], $_POST['price'], $_POST['stock'])) {
                     http_response_code(400);
                     echo json_encode(['success' => false, 'message' => 'Invalid input data.']);
                     return;
                 }
 
-                if (!is_numeric($_POST['price']) || !is_numeric($_POST['stock'])) {
-                    http_response_code(400);
-                    echo json_encode(['success' => false, 'message' => 'Price and stock must be numeric.']);
-                    return;
-                }
+            
                 $imagePath = null;
 
                 // Check if an image was uploaded and handle it

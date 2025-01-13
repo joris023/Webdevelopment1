@@ -24,24 +24,24 @@ class AdminController extends Controller {
     }
 
     public function removeorder() {
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        $orderId = filter_input(INPUT_POST, 'order_id', FILTER_VALIDATE_INT);
+        if ($orderId === false || $orderId === null) {
+            header("Location: /admin/manageorders?error=Invalid order ID");
+            exit();
+        }
 
-        $orderId = $_POST['order_id'];
         $this->orderService->removeOrder($orderId);
         header("Location: /admin/manageorders");
         exit(); // Stop further execution
     }
 
     public function orderdetails() {
-        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-        $orderId = $_GET['order_id'];
-    
-        if (!$orderId) {
-            die("Order ID is required");
+        $orderId = filter_input(INPUT_GET, 'order_id', FILTER_VALIDATE_INT);
+        if ($orderId === false || $orderId === null) {
+            die("Order ID is required and must be valid.");
         }
 
         $orderDetails = $this->orderService->getOrderDetails($orderId);
-    
         $this->displayView(['orderDetails' => $orderDetails]);
     }    
 }
