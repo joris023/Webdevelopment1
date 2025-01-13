@@ -1,12 +1,13 @@
 <?php require __DIR__ . '/../shared/header.php'; ?>
 <title>Manage Menu</title>
-    <div class="container mt-5">
+    <div class="container mt-3">
+        <div id="notificationArea"></div>
         <h1 class="text-center mb-4">Manage Menu</h1>    
         <!-- Add Menu Item Form -->
         <div class="card mb-4">
             <div class="card-body">
                 <h5 class="card-title">Add Menu Item</h5>
-                <form id="addMenuItemForm">
+                <form id="addMenuItemForm" onsubmit="addMenuItem(event)">
                     <div class="form-group">
                         <label for="itemType">Type</label>
                         <select class="form-control" id="itemType" name="type" required>
@@ -34,7 +35,7 @@
                         <label for="itemImage">Upload Image:</label>
                         <input type="file" id="itemImage" name="image" accept="image/*">
                     </div>
-                    <button type="submit" class="btn btn-primary" onclick="addMenuItem()">Add Item</button>
+                    <button type="submit" class="btn btn-primary">Add Item</button>
                 </form>
             </div>
         </div>

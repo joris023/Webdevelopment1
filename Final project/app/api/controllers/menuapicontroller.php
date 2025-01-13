@@ -19,25 +19,28 @@ class MenuApiController {
                 $menuItems = $this->menuService->getAllMenuItems();
                 echo json_encode($menuItems);
             } elseif ($method === 'POST') {
-                if (!isset($_POST['type'], $_POST['name'], $_POST['description'], $_POST['price'], $_POST['stock'])) {
+                // Validate input data
+                if (empty($_POST['type']) || empty($_POST['name']) || empty($_POST['description']) || 
+                    !isset($_POST['price']) || !isset($_POST['stock']) || 
+                    !is_numeric($_POST['price']) || !is_numeric($_POST['stock'])) {
+            
                     http_response_code(400);
-                    echo json_encode(['success' => false, 'message' => 'Invalid input data.']);
+                    echo json_encode(['success' => false, 'message' => 'All fields are required except the image file.']);
                     return;
                 }
-
             
                 $imagePath = null;
-
-                // Check if an image was uploaded and handle it
+            
+                // Handle image upload
                 if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
                     $uploadDir = __DIR__ . '/../../public/images/' . $_POST['type'] . '/';
                     if (!is_dir($uploadDir)) {
                         mkdir($uploadDir, 0755, true);
                     }
-
+            
                     $imageName = basename($_FILES['image']['name']);
                     $uploadFile = $uploadDir . $imageName;
-
+            
                     if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
                         $imagePath = '/images/' . $_POST['type'] . '/' . $imageName;
                     } else {
@@ -46,20 +49,24 @@ class MenuApiController {
                         return;
                     }
                 }
-
+            
                 // Prepare item data
-                $type = $_POST['type'];
+                $type = htmlspecialchars($_POST['type']);
                 $item = [
-                    'name' => $_POST['name'],
-                    'description' => $_POST['description'],
-                    'price' => $_POST['price'],
-                    'stock' => $_POST['stock'],
+                    'name' => htmlspecialchars($_POST['name']),
+                    'description' => htmlspecialchars($_POST['description']),
+                    'price' => floatval($_POST['price']),
+                    'stock' => intval($_POST['stock']),
                     'image' => $imagePath
                 ];
-                
-                $id = $this->menuService->addMenuItem($type, $item);
-                //echo json_encode(['success' => true, 'id' => $id, 'imagePath' => $imagePath]);
-                echo json_encode(['success' => true]);
+            
+                try {
+                    $id = $this->menuService->addMenuItem($type, $item);
+                    echo json_encode(['success' => true, 'id' => $id]);
+                } catch (Exception $e) {
+                    http_response_code(500);
+                    echo json_encode(['success' => false, 'message' => 'Failed to add menu item.']);
+                }
             } elseif ($method === 'PUT') {
                 $data = json_decode(file_get_contents('php://input'), true);
 

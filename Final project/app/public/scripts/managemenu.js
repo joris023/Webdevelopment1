@@ -28,7 +28,17 @@ async function fetchMenuItems() {
     });
 }
 
-async function addMenuItem() {
+function showNotification(type, message) {
+    const notificationArea = document.getElementById('notificationArea');
+    notificationArea.innerHTML = `
+    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+        ${message}
+    </div>`;
+}
+
+async function addMenuItem(event) {
+    event.preventDefault();
+
     const formData = new FormData();
     formData.append('type', document.getElementById('itemType').value);
     formData.append('name', document.getElementById('itemName').value);
@@ -36,7 +46,6 @@ async function addMenuItem() {
     formData.append('price', parseFloat(document.getElementById('itemPrice').value));
     formData.append('stock', parseInt(document.getElementById('itemStock').value, 10));
 
-    // Add the image file if provided
     const imageFile = document.getElementById('itemImage').files[0];
     if (imageFile) {
         formData.append('image', imageFile);
@@ -48,26 +57,21 @@ async function addMenuItem() {
             body: formData
         });
 
-        // Ensure the response is valid JSON
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-            const result = await response.json();
-            if (response.ok) {
-                alert('Menu item added successfully!');
-                document.getElementById('addMenuItemForm').reset();
-                fetchMenuItems(); // Refresh the menu items list
-            } else {
-                alert('Failed to add menu item: ' + result.message);
-            }
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+            document.getElementById('addMenuItemForm').reset();
+            fetchMenuItems();
+            showNotification('success', 'Menu item added successfully!');
         } else {
-            console.error('Unexpected response format');
-            alert('Unexpected response from the server. Check the logs.');
+            showNotification('danger', 'Failed to add menu item: ' + result.message);
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('An error occurred while adding the menu item: ' + error);
+        showNotification('danger', 'An error occurred while adding the menu item.');
     }
 }
+
 
 
 async function addStock(itemId, itemType) {
@@ -106,4 +110,4 @@ async function removeItem(itemId, itemType) {
 }
 
 // Initial fetch
-fetchMenuItems();
+//fetchMenuItems();
