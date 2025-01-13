@@ -39,6 +39,17 @@ class DrinkRepository extends Repository {
         }
     }
 
+    public function getNameById($id) {
+        try {
+            $stmt = $this->connection->prepare("SELECT name FROM drinks WHERE id = ?");
+            $stmt->execute([$id]);
+            return $stmt->fetchColumn();
+        } catch (PDOException $e) {
+            error_log("Database error in getNameById: " . $e->getMessage());
+            return null;
+        }
+    }
+
     public function insertDrink($drink) {
         try {
             $stmt = $this->connection->prepare(

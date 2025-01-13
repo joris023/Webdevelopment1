@@ -14,5 +14,10 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+        <?php if (isset($_GET['error'])): ?>
+            <div class="alert alert-danger m-0 mt-4" role="alert">
+                <?= htmlspecialchars($_GET['error']) ?>
+            </div>
+        <?php endif; ?>
     </div>
 <?php require __DIR__ . '/../shared/footer.php'; ?>

@@ -21,6 +21,11 @@
                 <!-- Register Button -->
                 <p class="text-center">Don't have an account?</p>
                 <a href="/login/register" class="btn btn-secondary btn-block">Register</a>
+                <?php if (isset($_GET['error'])): ?>
+                    <div class="alert alert-danger m-0 mt-4" role="alert">
+                        <?= htmlspecialchars($_GET['error']) ?>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>

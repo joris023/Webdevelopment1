@@ -39,6 +39,17 @@ class FoodRepository extends Repository {
         }
     }
 
+    public function getNameById($id) {
+        try {
+            $stmt = $this->connection->prepare("SELECT name FROM foods WHERE id = ?");
+            $stmt->execute([$id]);
+            return $stmt->fetchColumn();
+        } catch (PDOException $e) {
+            error_log("Database error in getNameById: " . $e->getMessage());
+            return null;
+        }
+    }
+
     public function insertFood($food) {
         try {
             $stmt = $this->connection->prepare(

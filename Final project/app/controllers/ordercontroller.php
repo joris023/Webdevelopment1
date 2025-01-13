@@ -149,7 +149,8 @@ class OrderController extends Controller {
             $this->confirmation();
         } catch (Exception $e) {
             error_log("Checkout error: " . $e->getMessage());
-            header("Location: /order?error=Checkout failed");
+            $errorMessage = urlencode($e->getMessage());
+            header("Location: /order?error=Checkout failed: $errorMessage");
             exit();
         }
     }

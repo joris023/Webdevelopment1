@@ -53,7 +53,7 @@ class MenuController extends Controller {
             $_SESSION['order']['drinks'][] = ['id' => $drinkId, 'quantity' => $quantity];
         }
 
-        header("Location: /menu/drink");
+        header("Location: /menu/drink?success=Added drink to order");
         exit();
     }
 
@@ -83,7 +83,7 @@ class MenuController extends Controller {
             $_SESSION['order']['foods'][] = ['id' => $foodId, 'quantity' => $quantity];
         }
 
-        header("Location: /menu/food");
+        header("Location: /menu/food?success=Added food to order");
         exit();
     }
 }

@@ -21,40 +21,46 @@ class OrderService {
 
     public function placeOrder(Order $order) {
         try {
-            // Save the order in the database
-            $this->orderRepository->saveOrder($order);
-    
-            // Update stock for foods
             foreach ($order->getFoods() as $food) {
                 $currentStock = $this->foodRepository->getStockById($food['id']);
                 error_log("Food ID: {$food['id']}, Current Stock: {$currentStock}, Requested Quantity: {$food['quantity']}");
-                $newStock = $currentStock - $food['quantity'];
-                if ($newStock < 0) {
-                    throw new Exception("Not enough stock for food ID: " . $food['id'] . $currentStock);
+                if ($currentStock < $food['quantity']) {
+                    $nameFood = $this->foodRepository->getNameById($food['id']);
+                    throw new Exception("Not enough stock for food $nameFood: Available {$currentStock}, Requested {$food['quantity']}");
                 }
-                $this->foodRepository->updateStock($food['id'], $newStock);
             }
     
-            // Update stock for drinks
             foreach ($order->getDrinks() as $drink) {
                 $currentStock = $this->drinkRepository->getStockById($drink['id']);
                 error_log("Drink ID: {$drink['id']}, Current Stock: {$currentStock}, Requested Quantity: {$drink['quantity']}");
-                $newStock = $currentStock - $drink['quantity'];
-                if ($newStock < 0) {
-                    throw new Exception("Not enough stock for drink ID: " . $drink['id'] . $currentStock);
+                if ($currentStock < $drink['quantity']) {
+                    $nameDrink = $this->drinkRepository->getNameById($drink['id']);
+                    throw new Exception("Not enough stock for drink $nameDrink: Available {$currentStock}, Requested {$drink['quantity']}");
                 }
+            }
+    
+            $this->orderRepository->saveOrder($order);
+    
+            foreach ($order->getFoods() as $food) {
+                $currentStock = $this->foodRepository->getStockById($food['id']);
+                $newStock = $currentStock - $food['quantity'];
+                $this->foodRepository->updateStock($food['id'], $newStock);
+            }
+    
+            foreach ($order->getDrinks() as $drink) {
+                $currentStock = $this->drinkRepository->getStockById($drink['id']);
+                $newStock = $currentStock - $drink['quantity'];
                 $this->drinkRepository->updateStock($drink['id'], $newStock);
             }
     
-            // Clear the session after successful order placement
             $_SESSION['order'] = [];
     
         } catch (Exception $e) {
             error_log("Order placement failed: " . $e->getMessage());
-            // Log error or rethrow exception
             throw $e;
         }
     }
+    
     
 
     public function getOrderById($orderId) {

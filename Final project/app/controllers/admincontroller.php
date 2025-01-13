@@ -31,7 +31,7 @@ class AdminController extends Controller {
         }
 
         $this->orderService->removeOrder($orderId);
-        header("Location: /admin/manageorders");
+        header("Location: /admin/manageorders?success=You have succesfully removed a order");
         exit(); // Stop further execution
     }
 

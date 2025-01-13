@@ -1,6 +1,16 @@
 <?php require __DIR__ . '/../shared/header.php'; ?>
 <title>Drink Menu</title>
-    <div class="container mt-5">
+    <div class="container mt-3">
+        <?php if (isset($_GET['success'])): ?>
+            <div class="alert alert-success m-0 mb-2" role="alert">
+                <?= htmlspecialchars($_GET['success']) ?>
+            </div>
+        <?php endif; ?>
+        <?php if (isset($_GET['error'])): ?>
+            <div class="alert alert-danger m-0 mb-2" role="alert">
+                <?= htmlspecialchars($_GET['error']) ?>
+            </div>
+        <?php endif; ?>
         <h1 class="text-center mb-4">Drink Menu</h1>
         <div class="row g-3">
             <?php foreach ($drinks as $drink): ?>

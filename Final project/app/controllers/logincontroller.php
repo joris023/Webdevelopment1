@@ -44,10 +44,10 @@ class LoginController extends Controller {
                 }
                 exit();
             } else {
-                header("Location: /login");
+                header("Location: /login?error=Wrong email or password");
             }
         } catch (Exception $e) {
-            header("Location: /login");
+            header("Location: /login?error=Something went wrong try again");
         }
     }
 
@@ -60,7 +60,7 @@ class LoginController extends Controller {
                 header("Location: /menu");
                 exit();
             } else {
-                header("Location: /login/tablenumber");
+                header("Location: /login/tablenumber?error=Invalid tablenumber");
             }
         }
     }
