@@ -29,6 +29,7 @@ class MenuController extends Controller {
     }
 
     public function addDrinkToOrder() {
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         $drinkId = $_POST['drink_id'];
         $quantity = $_POST['quantity'];
     
@@ -54,6 +55,7 @@ class MenuController extends Controller {
     }
     
     public function addFoodToOrder() {
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         $foodId = $_POST['food_id'];
         $quantity = $_POST['quantity'];
     

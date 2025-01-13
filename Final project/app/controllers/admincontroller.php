@@ -24,6 +24,8 @@ class AdminController extends Controller {
     }
 
     public function removeorder() {
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
         $orderId = $_POST['order_id'];
         $this->orderService->removeOrder($orderId);
         header("Location: /admin/manageorders");
@@ -31,6 +33,7 @@ class AdminController extends Controller {
     }
 
     public function orderdetails() {
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         $orderId = $_GET['order_id'];
     
         if (!$orderId) {

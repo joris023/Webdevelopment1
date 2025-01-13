@@ -28,6 +28,8 @@ require_once __DIR__ . '/../services/userservice.php';
         }
 
         public function authenticate() {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
             $email = $_POST['email'];
             $password = $_POST['password'];
             //var_dump($email, $password);
@@ -57,6 +59,9 @@ require_once __DIR__ . '/../services/userservice.php';
 
         public function setTableNumber() {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+                $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
                 $tableNumber = $_POST['table_number'];
         
                 if (is_numeric($tableNumber) && $tableNumber > 0) {
@@ -79,6 +84,8 @@ require_once __DIR__ . '/../services/userservice.php';
         }
 
         public function registerUser() {
+            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+            
             $name = $_POST['name'];
             $email = $_POST['email'];
             $password = $_POST['password'];

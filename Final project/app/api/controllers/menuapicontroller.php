@@ -10,93 +10,98 @@ class MenuApiController {
 
     public function index() {
         $method = $_SERVER['REQUEST_METHOD'];
-    
-        if ($method === 'GET') {
-            $menuItems = $this->menuService->getAllMenuItems();
-            echo json_encode($menuItems);
-        } elseif ($method === 'POST') {
-            if (!isset($_POST['type'], $_POST['name'], $_POST['description'], $_POST['price'], $_POST['stock'])) {
-                http_response_code(400);
-                echo json_encode(['success' => false, 'message' => 'Invalid input data.']);
-                return;
-            }
-            $imagePath = null;
-            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = __DIR__ . '/../../public/images/' . $_POST['type'] . '/';
-                if (!is_dir($uploadDir)) {
-                    mkdir($uploadDir, 0755, true);
-                }
-    
-                $imageName = basename($_FILES['image']['name']);
-                $uploadFile = $uploadDir . $imageName;
-    
-                if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
-                    $imagePath = '/images/' . $_POST['type'] . '/' . $imageName;
-                } else {
-                    http_response_code(500);
-                    echo json_encode(['success' => false, 'message' => 'Failed to upload image.']);
+        
+        // Always set the correct JSON header
+        header('Content-Type: application/json');
+
+        try {
+            if ($method === 'GET') {
+                $menuItems = $this->menuService->getAllMenuItems();
+                echo json_encode($menuItems);
+            } elseif ($method === 'POST') {
+                $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+                if (!isset($_POST['type'], $_POST['name'], $_POST['description'], $_POST['price'], $_POST['stock'])) {
+                    http_response_code(400);
+                    echo json_encode(['success' => false, 'message' => 'Invalid input data.']);
                     return;
                 }
-            }
-    
-            // Prepare item data
-            $type = $_POST['type'];
-            $item = [
-                'name' => $_POST['name'],
-                'description' => $_POST['description'],
-                'price' => $_POST['price'],
-                'stock' => $_POST['stock'],
-                'image' => $imagePath
-            ];
-    
-            try {
+
+                if (!is_numeric($_POST['price']) || !is_numeric($_POST['stock'])) {
+                    http_response_code(400);
+                    echo json_encode(['success' => false, 'message' => 'Price and stock must be numeric.']);
+                    return;
+                }
+                $imagePath = null;
+
+                // Check if an image was uploaded and handle it
+                if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                    $uploadDir = __DIR__ . '/../../public/images/' . $_POST['type'] . '/';
+                    if (!is_dir($uploadDir)) {
+                        mkdir($uploadDir, 0755, true);
+                    }
+
+                    $imageName = basename($_FILES['image']['name']);
+                    $uploadFile = $uploadDir . $imageName;
+
+                    if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
+                        $imagePath = '/images/' . $_POST['type'] . '/' . $imageName;
+                    } else {
+                        http_response_code(500);
+                        echo json_encode(['success' => false, 'message' => 'Failed to upload image.']);
+                        return;
+                    }
+                }
+
+                // Prepare item data
+                $type = $_POST['type'];
+                $item = [
+                    'name' => $_POST['name'],
+                    'description' => $_POST['description'],
+                    'price' => $_POST['price'],
+                    'stock' => $_POST['stock'],
+                    'image' => $imagePath
+                ];
+                
                 $id = $this->menuService->addMenuItem($type, $item);
-                echo json_encode(['success' => true, 'id' => $id, 'imagePath' => $imagePath]);
-            } catch (Exception $e) {
-                http_response_code(500);
-                echo json_encode(['success' => false, 'message' => 'Failed to add menu item.']);
-            }
-        } elseif ($method === 'PUT') {
-            $data = json_decode(file_get_contents('php://input'), true);
-            //echo($data);
-    
-            if (!isset($data['type'], $data['id'], $data['stock'])) {
-                http_response_code(400);
-                echo json_encode(['success' => false, 'message' => 'Invalid input data.']);
-                return;
-            }
-    
-            $type = $data['type'];
-            $id = $data['id'];
-            $newStock = $data['stock'];
-    
-            try {
+                //echo json_encode(['success' => true, 'id' => $id, 'imagePath' => $imagePath]);
+                echo json_encode(['success' => true]);
+            } elseif ($method === 'PUT') {
+                $data = json_decode(file_get_contents('php://input'), true);
+
+                if (!isset($data['type'], $data['id'], $data['stock'])) {
+                    http_response_code(400);
+                    echo json_encode(['success' => false, 'message' => 'Invalid input data.']);
+                    return;
+                }
+
+                $type = $data['type'];
+                $id = $data['id'];
+                $newStock = $data['stock'];
+
                 $this->menuService->updateStock($type, $id, $newStock);
                 echo json_encode(['success' => true, 'newStock' => $newStock]);
-            } catch (Exception $e) {
-                http_response_code(500);
-                echo json_encode(['success' => false, 'message' => 'Failed to update stock.']);
-            }
-        } elseif ($method === 'DELETE') {
-            $data = json_decode(file_get_contents('php://input'), true);
-    
-            if (!isset($data['type'], $data['id'])) {
-                http_response_code(400);
-                echo json_encode(['success' => false, 'message' => 'Invalid input data.']);
-                return;
-            }
-    
-            $type = $data['type'];
-            $id = $data['id'];
-    
-            try {
+            } elseif ($method === 'DELETE') {
+                $data = json_decode(file_get_contents('php://input'), true);
+
+                if (!isset($data['type'], $data['id'])) {
+                    http_response_code(400);
+                    echo json_encode(['success' => false, 'message' => 'Invalid input data.']);
+                    return;
+                }
+
+                $type = $data['type'];
+                $id = $data['id'];
+
                 $this->menuService->deleteMenuItem($type, $id);
                 echo json_encode(['success' => true, 'message' => 'Item deleted successfully.']);
-            } catch (Exception $e) {
-                http_response_code(500);
-                echo json_encode(['success' => false, 'message' => 'Failed to delete item.']);
+            } else {
+                http_response_code(405);
+                echo json_encode(['success' => false, 'message' => 'Method not allowed.']);
             }
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => 'An error occurred.']);
+            error_log($e->getMessage());
         }
-    }    
+    }
 }
-?>

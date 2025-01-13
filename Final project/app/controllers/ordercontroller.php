@@ -67,6 +67,7 @@ class OrderController extends Controller {
     }
 
     public function updateFood() {
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         $foodId = $_POST['food_id'];
         $action = $_POST['action'];
     
@@ -88,7 +89,7 @@ class OrderController extends Controller {
     }
 
     public function deleteFood() {
-
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         $foodId = $_POST['food_id'];
 
         if (isset($_SESSION['order']['foods'])) {
@@ -104,6 +105,7 @@ class OrderController extends Controller {
     }
 
     public function updateDrink() {
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         $foodId = $_POST['drink_id'];
         $action = $_POST['action'];
     
@@ -125,7 +127,7 @@ class OrderController extends Controller {
     }
 
     public function deleteDrink() {
-
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
         $drinkId = $_POST['drink_id'];
 
         if (isset($_SESSION['order']['drinks'])) {

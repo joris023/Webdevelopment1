@@ -17,11 +17,6 @@ class DrinkRepository extends Repository {
     }
 
     public function getDrinkById($id) {
-        $id = filter_var($id, FILTER_VALIDATE_INT);
-        if ($id === false) {
-            throw new Exception("Invalid Drink ID");
-        }
-
         try {
             $stmt = $this->connection->prepare("SELECT * FROM drinks WHERE id = ?");
             $stmt->execute([$id]);
@@ -34,11 +29,6 @@ class DrinkRepository extends Repository {
     }
 
     public function getStockById($id) {
-        $id = filter_var($id, FILTER_VALIDATE_INT);
-        if ($id === false) {
-            throw new Exception("Invalid Stock ID");
-        }
-
         try {
             $stmt = $this->connection->prepare("SELECT stock FROM drinks WHERE id = ?");
             $stmt->execute([$id]);
@@ -55,11 +45,11 @@ class DrinkRepository extends Repository {
                 "INSERT INTO drinks (name, description, price, stock, image) VALUES (?, ?, ?, ?, ?)"
             );
             $stmt->execute([
-                htmlspecialchars($drink['name']),
-                htmlspecialchars($drink['description']),
-                filter_var($drink['price'], FILTER_VALIDATE_FLOAT),
-                filter_var($drink['stock'], FILTER_VALIDATE_INT),
-                htmlspecialchars($drink['image'])
+                $drink['name'],
+                $drink['description'],
+                $drink['price'],
+                $drink['stock'],
+                $drink['image']
             ]);
             return $this->connection->lastInsertId();
         } catch (PDOException $e) {
@@ -69,13 +59,6 @@ class DrinkRepository extends Repository {
     }
 
     public function updateStock($id, $stock) {
-        $id = filter_var($id, FILTER_VALIDATE_INT);
-        $stock = filter_var($stock, FILTER_VALIDATE_INT);
-
-        if ($id === false || $stock === false) {
-            throw new Exception("Invalid input for updateStock");
-        }
-
         try {
             $stmt = $this->connection->prepare("UPDATE drinks SET stock = ? WHERE id = ?");
             $stmt->execute([$stock, $id]);
@@ -85,11 +68,6 @@ class DrinkRepository extends Repository {
     }
 
     public function deleteItem($id) {
-        $id = filter_var($id, FILTER_VALIDATE_INT);
-        if ($id === false) {
-            throw new Exception("Invalid Item ID");
-        }
-
         try {
             $stmt = $this->connection->prepare("DELETE FROM drinks WHERE id = ?");
             $stmt->execute([$id]);

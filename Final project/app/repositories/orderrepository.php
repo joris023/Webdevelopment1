@@ -13,9 +13,9 @@ class OrderRepository extends Repository {
                 "INSERT INTO orders (user_id, table_number, total_amount) VALUES (?, ?, ?)"
             );
             $stmt->execute([
-                filter_var($order->getUserId(), FILTER_VALIDATE_INT),
-                filter_var($order->getTableNumber(), FILTER_VALIDATE_INT),
-                filter_var($order->getTotalAmount(), FILTER_VALIDATE_FLOAT),
+                $order->getUserId(),
+                $order->getTableNumber(),
+                $order->getTotalAmount(),
             ]);
 
             $orderId = $this->connection->lastInsertId();
@@ -27,8 +27,8 @@ class OrderRepository extends Repository {
                 );
                 $stmt->execute([
                     $orderId,
-                    filter_var($food['id'], FILTER_VALIDATE_INT),
-                    filter_var($food['quantity'], FILTER_VALIDATE_INT),
+                    $food['id'],
+                    $food['quantity'],
                 ]);
             }
 
@@ -39,8 +39,8 @@ class OrderRepository extends Repository {
                 );
                 $stmt->execute([
                     $orderId,
-                    filter_var($drink['id'], FILTER_VALIDATE_INT),
-                    filter_var($drink['quantity'], FILTER_VALIDATE_INT),
+                    $drink['id'],
+                    $drink['quantity'],
                 ]);
             }
 
@@ -53,11 +53,6 @@ class OrderRepository extends Repository {
     }
 
     public function getOrderById($orderId) {
-        $orderId = filter_var($orderId, FILTER_VALIDATE_INT);
-        if ($orderId === false) {
-            throw new Exception("Invalid Order ID");
-        }
-
         try {
             $stmt = $this->connection->prepare("SELECT * FROM orders WHERE id = ?");
             $stmt->execute([$orderId]);
@@ -81,11 +76,6 @@ class OrderRepository extends Repository {
     }
 
     public function deleteItem($id) {
-        $id = filter_var($id, FILTER_VALIDATE_INT);
-        if ($id === false) {
-            throw new Exception("Invalid Order ID");
-        }
-
         try {
             $stmt = $this->connection->prepare("DELETE FROM orders WHERE id = ?");
             $stmt->execute([$id]);
@@ -95,11 +85,6 @@ class OrderRepository extends Repository {
     }
 
     public function getOrderFoods($orderId) {
-        $orderId = filter_var($orderId, FILTER_VALIDATE_INT);
-        if ($orderId === false) {
-            throw new Exception("Invalid Order ID");
-        }
-
         try {
             $stmt = $this->connection->prepare("
                 SELECT f.name, of.quantity 
@@ -116,11 +101,6 @@ class OrderRepository extends Repository {
     }
 
     public function getOrderDrinks($orderId) {
-        $orderId = filter_var($orderId, FILTER_VALIDATE_INT);
-        if ($orderId === false) {
-            throw new Exception("Invalid Order ID");
-        }
-
         try {
             $stmt = $this->connection->prepare("
                 SELECT d.name, od.quantity 

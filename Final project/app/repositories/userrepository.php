@@ -5,11 +5,6 @@ require_once __DIR__ . '/../models/user.php';
 class UserRepository extends Repository {
 
     public function getUserByEmail($email) {
-        $email = filter_var($email, FILTER_VALIDATE_EMAIL);
-        if ($email === false) {
-            throw new Exception("Invalid Email Address");
-        }
-
         try {
             $stmt = $this->connection->prepare("SELECT * FROM users WHERE email = ?");
             $stmt->execute([$email]);
@@ -22,14 +17,6 @@ class UserRepository extends Repository {
     }
 
     public function saveUser($name, $email, $password) {
-        $email = filter_var($email, FILTER_VALIDATE_EMAIL);
-        $name = htmlspecialchars($name);
-        $password = htmlspecialchars($password);
-
-        if ($email === false) {
-            throw new Exception("Invalid Email Address");
-        }
-
         try {
             $stmt = $this->connection->prepare("INSERT INTO users (firstname, email, password, role) VALUES (?, ?, ?, 'customer')");
             $stmt->execute([$name, $email, $password]);

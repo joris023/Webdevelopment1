@@ -48,19 +48,27 @@ async function addMenuItem() {
             body: formData
         });
 
-        const result = await response.json();
-        if (response.ok) {
-            alert('Menu item added successfully!');
-            document.getElementById('addMenuItemForm').reset();
-            fetchMenuItems(); // Refresh the menu items list
+        // Ensure the response is valid JSON
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            const result = await response.json();
+            if (response.ok) {
+                alert('Menu item added successfully!');
+                document.getElementById('addMenuItemForm').reset();
+                fetchMenuItems(); // Refresh the menu items list
+            } else {
+                alert('Failed to add menu item: ' + result.message);
+            }
         } else {
-            alert('Failed to add menu item: ' + result.message);
+            console.error('Unexpected response format');
+            alert('Unexpected response from the server. Check the logs.');
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('An error occurred while adding the menu item.');
+        alert('An error occurred while adding the menu item: ' + error);
     }
 }
+
 
 async function addStock(itemId, itemType) {
     const stockElement = document.getElementById(`stock-${itemId}-${itemType}`);
