@@ -90,7 +90,7 @@ async function addStock(itemId, itemType) {
         const updatedStock = await response.json();
         document.getElementById(`stock-${itemId}-${itemType}`).textContent = updatedStock.newStock;
     } else {
-        alert('Failed to update stock.');
+        showNotification('danger', 'An error occurred while adding stock.');
     }
 }
 
@@ -102,10 +102,9 @@ async function removeItem(itemId, itemType) {
     });
 
     if (response.ok) {
-        alert('Item removed successfully.');
         fetchMenuItems();
     } else {
-        alert('Failed to remove item.');
+        showNotification('danger', 'An error occurred while removing the menu item.');
     }
 }
 

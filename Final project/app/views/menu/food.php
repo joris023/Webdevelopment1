@@ -1,6 +1,6 @@
 <?php require __DIR__ . '/../shared/header.php'; ?>
 <title>Food Menu</title>
-    <div class="container mt-3">
+    <div class="container mt-3 mb-3">
         <?php if (isset($_GET['success'])): ?>
             <div class="alert alert-success m-0 mb-2" role="alert">
                 <?= htmlspecialchars($_GET['success']) ?>

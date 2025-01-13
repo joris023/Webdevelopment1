@@ -1,17 +1,17 @@
 <?php require __DIR__ . '../../shared/header.php'; ?>
 <title>Manage Orders</title>
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Food Menu</h1>
+    <div class="container mt-3 mb-3">
         <?php if (isset($_GET['success'])): ?>
-            <div class="alert alert-success m-0 mt-4" role="alert">
+            <div class="alert alert-success m-0 mb-3" role="alert">
                 <?= htmlspecialchars($_GET['success']) ?>
             </div>
         <?php endif; ?>
         <?php if (isset($_GET['error'])): ?>
-            <div class="alert alert-danger m-0 mt-4" role="alert">
+            <div class="alert alert-danger m-0 mb-3" role="alert">
                 <?= htmlspecialchars($_GET['error']) ?>
             </div>
         <?php endif; ?>
+        <h1 class="text-center mb-4">Food Menu</h1>
         <div class="row g-3">
         <?php foreach ($orders as $order): ?>
             <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-2">
